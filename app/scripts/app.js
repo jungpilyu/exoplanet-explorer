@@ -63,6 +63,15 @@ Instructions:
     Uncomment the next line and start here when you're ready to add the first thumbnail!
     Your code goes here!
      */
-    // getJSON('../data/earth-like-results.json')
+    getJSON('../data/earth-like-results.json').then(function(response) {
+      addSearchHeader(response.query);
+      return getJSON(response.results[0]);
+    }).catch(function(error) {
+      addSearchHeader('unknown');
+    }).then(function(response) {
+      createPlanetThumb(response);
+    }).catch(function(error) {
+      addSearchHeader('unknown');
+    });
   });
 })(document);

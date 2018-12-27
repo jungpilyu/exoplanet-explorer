@@ -34,6 +34,7 @@ Instructions:
     Return the fetch.
     Your code goes here!
      */
+    return fetch(url, {method: 'get'});
   }
 
   /**
@@ -46,6 +47,14 @@ Instructions:
     Return a Promise that gets a URL and parses the JSON response. Use your get method!
     Your code goes here!
      */
+     return get(url).then(function(response) {
+      // Handle network errors
+      if (!response.ok) {
+        throw Error(response.statusText ? response.statusText : 'Unknown network error')
+      }
+      
+       return response.json();
+     });
   }
 
   window.addEventListener('WebComponentsReady', function() {
@@ -55,6 +64,12 @@ Instructions:
     Don't forget to chain with a .then and a .catch!
     Your code goes here too!
      */
-    // getJSON('../data/earth-like-results.json')
+    getJSON('../data/earth-like-results.json').then(function(response) {
+      console.log(response);
+      addSearchHeader(response.query);
+    }).catch(function(error) {
+      console.log(error);
+      addSearchHeader('unknown');
+    });
   });
 })(document);

@@ -57,6 +57,17 @@ proper order even if all the requests haven't finished.
     /*
     Your code goes here!
      */
-    // getJSON('../data/earth-like-results.json')
+    getJSON('../data/earth-like-results.json').then(function(response) {
+      addSearchHeader(response.query);
+      
+      return response.results.map(getJSON)
+        .reduce(function(sequence, c) {
+          return sequence.then(function() {
+            return c;
+          }).then(createPlanetThumb);
+      }, Promise.resolve());      
+    }).catch(function(e) {
+      console.log(e);
+    });
   });
 })(document);
